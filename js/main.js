@@ -68,20 +68,13 @@ function createRandomIdFromRangeGenerator (min, max) {
   };
 }
 
-function createIdGenerator () {
-  let lastGeneratedId = 0;
-
-  return function () {
-    lastGeneratedId += 1;
-    return lastGeneratedId;
-  };
-}
-
 const generatePhotoId = createIdGenerator()();
 
 const generatePhotoUrl = `photos/${generatePhotoId}.jpg`;
 
 const generateCommentId = createRandomIdFromRangeGenerator(1, MAX_COMMENTS_COUNT);
+
+const generateDescription = DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)];
 
 const createComment = () => ({
   id: generateCommentId(),
@@ -90,14 +83,17 @@ const createComment = () => ({
   name: NAMES[getRandomInteger(0, NAMES.length - 1)]
 });
 
-const createPictureData = function (index) {
+const createPicture = function () {
   return {
     id: generatePhotoId,
     url: generatePhotoUrl,
-    description: DESCRIPTIONS[index],
+    description: generateDescription,
     likes: getRandomInteger(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
     comments: Array.from({length: getRandomInteger(0, PHOTO_COMMENTS_COUNT)}, createComment),
   };
 };
 
+const photoGallery = Array.from({length: PHOTO_COUNT}, createPicture);
+
+console.log(photoGallery);
 
