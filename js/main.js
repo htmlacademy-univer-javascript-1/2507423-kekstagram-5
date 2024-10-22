@@ -41,6 +41,9 @@ const DESCRIPTIONS = [
 
 ];
 
+const NAMES = ['Алексей', 'Мария', 'Дмитрий', 'Ольга', 'Николай', 'Екатерина', 'Иван', 'Анна', 'Сергей', 'Татьяна'];
+
+
 function getRandomInteger (min, max) {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -54,7 +57,7 @@ function createRandomIdFromRangeGenerator (min, max) {
   return function () {
     let currentValue = getRandomInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
+      console.error(`Перебраны все числа из диапазона от ${ min } до ${ max}`);
       return null;
     }
     while (previousValues.includes(currentValue)) {
@@ -80,20 +83,21 @@ const generatePhotoUrl = `photos/${generatePhotoId}.jpg`;
 
 const generateCommentId = createRandomIdFromRangeGenerator(1, MAX_COMMENTS_COUNT);
 
-const createComment = function () {
-  return {
-    id: generateCommentId(),
-    avatar: `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`,
-  };
-};
+const createComment = () => ({
+  id: generateCommentId(),
+  avatar: `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`,
+  message: MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
+  name: NAMES[getRandomInteger(0, NAMES.length - 1)]
+});
 
 const createPictureData = function (index) {
   return {
     id: generatePhotoId,
     url: generatePhotoUrl,
     description: DESCRIPTIONS[index],
-    likes: getRandomInteger(15, 200),
-    comments: [],
+    likes: getRandomInteger(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
+    comments: Array.from({length: getRandomInteger(0, PHOTO_COMMENTS_COUNT)}, createComment),
   };
 };
+
 
