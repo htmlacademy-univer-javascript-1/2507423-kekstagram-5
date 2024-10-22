@@ -1,7 +1,7 @@
 const PHOTO_COUNT = 25;
 const MIN_LIKES_COUNT = 15;
 const MAX_LIKES_COUNT = 200;
-const COMMENTS_COUNT = 30;
+const PHOTO_COMMENTS_COUNT = 30;
 const AVATAR_COUNT = 6;
 const MESSAGES = [
   'Всё отлично!',
@@ -11,6 +11,7 @@ const MESSAGES = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
+const MAX_COMMENTS_COUNT = PHOTO_COMMENTS_COUNT * PHOTO_COUNT;
 
 const DESCRIPTIONS = [
   'Летний закат на пляже 🌅',
@@ -47,6 +48,23 @@ function getRandomInteger (min, max) {
   return Math.floor(Math.random() * (upper - lower + 1) + lower);
 }
 
+function createRandomIdFromRangeGenerator (min, max) {
+  const previousValues = [];
+
+  return function () {
+    let currentValue = getRandomInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+};
+
 function createIdGenerator () {
   let lastGeneratedId = 0;
 
@@ -59,6 +77,14 @@ function createIdGenerator () {
 const generatePhotoId = createIdGenerator()();
 
 const generatePhotoUrl = `photos/${generatePhotoId}.jpg`;
+
+const generateAvatar = `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`;
+
+const createComment = function () {
+  return {
+
+  }
+}
 
 const createPictureData = function (index) {
   return {
