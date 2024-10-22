@@ -1,39 +1,30 @@
-const { create, get } = require('browser-sync');
-
-
-function getRandomInteger (min, max) = {
+function getRandomInteger (min, max) {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
-  const result = Math.random() * (upper - lower + 1) + lower;
 
-  return result;
+  return Math.floor(Math.random() * (upper - lower + 1) + lower);
 };
 
-function createRandomIdFromRangeGenerator (min, max) {
-  const previousValues = [];
+function createIdGenerator () {
+  let lastGeneratedId = 0;
 
   return function () {
-    let currentValue = getRandomInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
+    lastGeneratedId += 1;
+    return lastGeneratedId
   };
 };
 
-const generatePhotoId = createRandomIdFromRangeGenerator(1, 25);
+const generatePhotoId = createIdGenerator();
 
-const generatePhotoDescription = function () {
+const generatePhotoUrl = `photos/${generatePhotoId}.jpg`;
+
+const createPictureData = function () {
   return {
     id: generatePhotoId(),
-    url: '',
+    url: generatePhotoUrl,
     description: '',
     likes: NaN,
     comments: [],
   };
 };
+
