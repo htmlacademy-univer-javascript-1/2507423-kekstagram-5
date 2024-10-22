@@ -63,7 +63,7 @@ function createRandomIdFromRangeGenerator (min, max) {
     previousValues.push(currentValue);
     return currentValue;
   };
-};
+}
 
 function createIdGenerator () {
   let lastGeneratedId = 0;
@@ -78,13 +78,14 @@ const generatePhotoId = createIdGenerator()();
 
 const generatePhotoUrl = `photos/${generatePhotoId}.jpg`;
 
-const generateAvatar = `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`;
+const generateCommentId = createRandomIdFromRangeGenerator(1, MAX_COMMENTS_COUNT);
 
 const createComment = function () {
   return {
-
-  }
-}
+    id: generateCommentId(),
+    avatar: `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`,
+  };
+};
 
 const createPictureData = function (index) {
   return {
