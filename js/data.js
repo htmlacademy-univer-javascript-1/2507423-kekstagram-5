@@ -57,12 +57,12 @@ const createComment = () => ({
 
 const createPicture = function () {
   const photoId = generatePhotoId();
-  const generateDescription = DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)];
+  const photoDescription = DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)];
 
   return {
     id: photoId,
     url: `photos/${photoId}.jpg`,
-    description: generateDescription,
+    description: photoDescription,
     likes: getRandomInteger(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
     comments: Array.from({length: getRandomInteger(0, PHOTO_COMMENTS_COUNT)}, createComment),
   };
