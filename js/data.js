@@ -1,4 +1,4 @@
-import { getRandomInteger, createRandomIdFromRangeGenerator} from './util';
+import { getRandomInteger, createRandomIdFromRangeGenerator} from './util.js';
 const PHOTO_COUNT = 25;
 const MIN_LIKES_COUNT = 15;
 const MAX_LIKES_COUNT = 200;
@@ -45,24 +45,20 @@ const DESCRIPTIONS = [
 const NAMES = ['Алексей', 'Мария', 'Дмитрий', 'Ольга', 'Николай', 'Екатерина', 'Иван', 'Анна', 'Сергей', 'Татьяна'];
 
 const generatePhotoId = createRandomIdFromRangeGenerator(1, PHOTO_COUNT);
-
 const generateCommentId = createRandomIdFromRangeGenerator(1, MAX_COMMENTS_COUNT);
-
 const createComment = () => ({
   id: generateCommentId(),
   avatar: `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`,
   message: MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
   name: NAMES[getRandomInteger(0, NAMES.length - 1)]
 });
-
 const createPicture = function () {
   const photoId = generatePhotoId();
-  const generateDescription = DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)];
-
+  const photoDescription = DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)];
   return {
     id: photoId,
     url: `photos/${photoId}.jpg`,
-    description: generateDescription,
+    description: photoDescription,
     likes: getRandomInteger(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
     comments: Array.from({length: getRandomInteger(0, PHOTO_COMMENTS_COUNT)}, createComment),
   };
