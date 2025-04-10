@@ -13,9 +13,9 @@ thumbnailsGallery.forEach((thumbnail) => {
   pictureElement.querySelector('.picture__img').src = thumbnail.url;
   pictureElement.querySelector('.picture__likes').textContent = thumbnail.likes;
   pictureElement.querySelector('.picture__comments').textContent = thumbnail.comments.length;
-  picturesContainerElement.append(picturesContainerFragment);
+  picturesContainerFragment.appendChild(pictureElement);
 });
 
-picturesContainerElement.append(picturesContainerFragment);
+picturesContainerElement.appendChild(picturesContainerFragment);
 
 
