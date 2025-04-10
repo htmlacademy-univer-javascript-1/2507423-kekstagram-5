@@ -9,10 +9,10 @@ function createIdGenerator() {
   let lastGeneratedId = 0;
 
   return function () {
-    lastGeneratedId += 1;
+    lastGeneratedId = lastGeneratedId + 1;
     return lastGeneratedId;
+  };
 }
-
 function createRandomIdFromRangeGenerator (min, max) {
   const previousValues = [];
 
@@ -29,4 +29,4 @@ function createRandomIdFromRangeGenerator (min, max) {
   };
 }
 
-export {getRandomInteger, createRandomIdFromRangeGenerator};
+export {getRandomInteger, createRandomIdFromRangeGenerator, createIdGenerator};

@@ -6,6 +6,7 @@ const picturesContainer = document.querySelector('.pictures');
 
 const thumbnailsGallery = createPhotoGallery();
 
+
 thumbnailsGallery.forEach((thumbnail) => {
   const pictureElement = pictureTemplate.cloneNode(true);
   pictureElement.querySelector('.picture__img').src = thumbnail.url;
