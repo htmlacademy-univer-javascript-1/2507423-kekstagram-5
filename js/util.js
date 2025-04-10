@@ -5,6 +5,14 @@ function getRandomInteger (min, max) {
   return Math.floor(Math.random() * (upper - lower + 1) + lower);
 }
 
+function createIdGenerator () {
+  let lastGeneratedId = 0;
+  
+  return function () {
+    lastGeneratedId += 1;
+    return lastGeneratedId;
+  };
+}
 function createRandomIdFromRangeGenerator (min, max) {
   const previousValues = [];
 
