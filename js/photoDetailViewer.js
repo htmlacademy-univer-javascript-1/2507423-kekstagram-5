@@ -51,6 +51,9 @@ picturesElement.addEventListener('click', (evt) => {
     bigPictureCommentsList.appendChild(commentElement);
   });
 
+  bigPictureCommentsCount.classList.add('hidden');
+  document.querySelector('.comments-loader').classList.add('hidden');
+
   document.body.classList.add('modal-open');
 });
 
