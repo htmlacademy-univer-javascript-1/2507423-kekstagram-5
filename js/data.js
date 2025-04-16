@@ -46,13 +46,13 @@ const NAMES = ['Алексей', 'Мария', 'Дмитрий', 'Ольга', '
 
 const generatePhotoId = createRandomIdFromRangeGenerator(1, PHOTO_COUNT);
 const generateCommentId = createIdGenerator(1, MAX_COMMENTS_COUNT);
-const createComment = () => ({
+const createCommentData = () => ({
   id: generateCommentId(),
   avatar: `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`,
   message: MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
   name: NAMES[getRandomInteger(0, NAMES.length - 1)]
 });
-const createPicture = function () {
+const createPictureData = function () {
   const photoId = generatePhotoId();
   const photoDescription = DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)];
   return {
@@ -60,10 +60,10 @@ const createPicture = function () {
     url: `photos/${photoId}.jpg`,
     description: photoDescription,
     likes: getRandomInteger(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
-    comments: Array.from({length: getRandomInteger(0, PHOTO_COMMENTS_COUNT)}, createComment),
+    comments: Array.from({length: getRandomInteger(0, PHOTO_COMMENTS_COUNT)}, createCommentData),
   };
 };
 
-const createPhotoGallery = () => Array.from({length: PHOTO_COUNT}, createPicture);
+const createPhotoGallery = () => Array.from({length: PHOTO_COUNT}, createPictureData);
 
 export {createPhotoGallery};
