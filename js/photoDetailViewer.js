@@ -2,6 +2,7 @@ import { thumbnailsGallery } from './thumbnailRender.js';
 
 const picturesElement = document.querySelector('.pictures');
 const bigPictureElement = document.querySelector('.big-picture');
+const closeButtonElement = document.querySelector('.big-picture__cancel');
 
 const bigPictureImage = bigPictureElement.querySelector('.big-picture__img img');
 const bigPictureDescription = bigPictureElement.querySelector('.social__caption');
@@ -57,3 +58,17 @@ picturesElement.addEventListener('click', (evt) => {
   document.body.classList.add('modal-open');
 });
 
+function closeBigPicture() {
+  bigPictureElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+}
+
+closeButtonElement.addEventListener('click', () => {
+  closeBigPicture();
+});
+
+document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape') {
+    closeBigPicture();
+  }
+});
