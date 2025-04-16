@@ -1,4 +1,4 @@
-import { getRandomInteger, createRandomIdFromRangeGenerator} from './util.js';
+import { getRandomInteger, createRandomIdFromRangeGenerator, createIdGenerator} from './util.js';
 const PHOTO_COUNT = 25;
 const MIN_LIKES_COUNT = 15;
 const MAX_LIKES_COUNT = 200;
@@ -45,7 +45,7 @@ const DESCRIPTIONS = [
 const NAMES = ['Алексей', 'Мария', 'Дмитрий', 'Ольга', 'Николай', 'Екатерина', 'Иван', 'Анна', 'Сергей', 'Татьяна'];
 
 const generatePhotoId = createRandomIdFromRangeGenerator(1, PHOTO_COUNT);
-const generateCommentId = createRandomIdFromRangeGenerator(1, MAX_COMMENTS_COUNT);
+const generateCommentId = createIdGenerator(1, MAX_COMMENTS_COUNT);
 const createComment = () => ({
   id: generateCommentId(),
   avatar: `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`,
