@@ -1,3 +1,4 @@
+/* eslint-disable curly */
 import { thumbnailsGallery } from './thumbnailRender.js';
 
 const picturesElement = document.querySelector('.pictures');
@@ -33,22 +34,16 @@ let displayedComments = 0;
 
 picturesElement.addEventListener('click', (evt) => {
   const image = evt.target;
-  // eslint-disable-next-line curly
   if (!image.classList.contains('picture__img')) return;
   evt.preventDefault();
 
   const picture = image.closest('.picture');
   const pictureId = Number(picture.dataset.id);
 
-  for (let i = 0; i < thumbnailsGallery.length; i++) {
-    if (thumbnailsGallery[i].id === pictureId) {
-      photoData = thumbnailsGallery[i];
-      break;
-    }
-  }
+  const foundPhoto = thumbnailsGallery.find((thumbnail) => thumbnail.id === pictureId);
+  if (!foundPhoto) return;
 
-  // eslint-disable-next-line curly
-  if (!photoData) return;
+  photoData = foundPhoto;
 
   bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
