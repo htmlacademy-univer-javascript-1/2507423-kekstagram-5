@@ -36,6 +36,17 @@ function onDocumentEscapeKeydown(evt) {
 }
 
 imageUploadFile.addEventListener('change', () => {
+  const file = imageUploadFile.files[0];
+  const fileReader = new FileReader();
+
+  fileReader.addEventListener('load', () => {
+    imagePreview.src = fileReader.result;
+  });
+
+  if (file) {
+    fileReader.readAsDataURL(file);
+  }
+
   resetFilters();
   openUploadForm();
 
