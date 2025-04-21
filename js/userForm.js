@@ -44,6 +44,7 @@ imageUploadFile.addEventListener('change', () => {
 
 imageUploadCancel.addEventListener('click', () => {
   closeUploadForm();
+  resetForm();
 });
 
 imageDescription.addEventListener('keydown', (evt) => {
@@ -123,11 +124,27 @@ pristine.addValidator(
   'Хэш-тег должен начинаться с # и содержать буквы и цифры (не более 20 символов, включая #)'
 );
 
-imageUploadForm.addEventListener('submit', (evt) => {
+imageUploadForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
 
   if (pristine.validate()) {
-    closeUploadForm();
+    try {
+      const formData = new FormData(imageUploadForm);
+      const response = await fetch(imageUploadForm.action, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        closeUploadForm();
+        resetForm();
+        showMessage('success', 'success__button');
+      } else {
+        showMessage('error', 'error__button');
+      }
+    } catch {
+      showMessage('error', 'error__button');
+    }
   }
 });
 
@@ -229,3 +246,39 @@ effectLevelSlider.noUiSlider.on('update', (values) => {
 
 effectLevelContainer.classList.add('hidden');
 effectLevelValue.value = '';
+
+function resetForm() {
+  updateScale(100);
+  resetFilters();
+  imageDescription.value = '';
+  imageHashtagField.value = '';
+  imageUploadFile.value = '';
+}
+
+function showMessage(templateId, buttonClass) {
+  const template = document.querySelector(`#${templateId}`).content.cloneNode(true);
+  const messageElement = template.querySelector(`.${templateId}`);
+  document.body.appendChild(messageElement);
+
+  function closeMessage() {
+    messageElement.remove();
+    document.removeEventListener('keydown', onEscapeKeydown);
+    document.removeEventListener('click', onOutsideClick);
+  }
+
+  function onEscapeKeydown(evt) {
+    if (evt.key === 'Escape') {
+      closeMessage();
+    }
+  }
+
+  function onOutsideClick(evt) {
+    if (!messageElement.contains(evt.target)) {
+      closeMessage();
+    }
+  }
+
+  messageElement.querySelector(`.${buttonClass}`).addEventListener('click', closeMessage);
+  document.addEventListener('keydown', onEscapeKeydown);
+  document.addEventListener('click', onOutsideClick);
+}
