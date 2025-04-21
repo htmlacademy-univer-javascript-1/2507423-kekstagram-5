@@ -1,10 +1,16 @@
+const imagePreview = document.querySelector('.img-upload__preview img');
 
 const imageUploadForm = document.querySelector('#upload-select-image');
 const imageUploadFile = document.querySelector('#upload-file');
 const imageUploadOverlay = document.querySelector('.img-upload__overlay');
 const imageUploadCancel = document.querySelector('#upload-cancel');
+
 const imageDescription = imageUploadForm.querySelector('.text__description');
 const imageHashtagField = imageUploadForm.querySelector('.text__hashtags');
+
+const scaleControlSmaller = document.querySelector('.scale__control--smaller');
+const scaleControlBigger = document.querySelector('.scale__control--bigger');
+const scaleControlValue = document.querySelector('.scale__control--value');
 function openUploadForm() {
   imageUploadForm.classList.remove('hidden');
   imageUploadOverlay.classList.remove('hidden');
@@ -118,3 +124,20 @@ imageUploadForm.addEventListener('submit', (evt) => {
     closeUploadForm();
   }
 });
+
+let currentScale = 100;
+function updateScale(newScale) {
+  currentScale = Math.min(100, Math.max(25, newScale));
+  scaleControlValue.value = `${currentScale}%`;
+  imagePreview.style.transform = `scale(${currentScale / 100})`;
+}
+
+scaleControlSmaller.addEventListener('click', () => {
+  updateScale(currentScale - 25);
+});
+
+scaleControlBigger.addEventListener('click', () => {
+  updateScale(currentScale + 25);
+});
+
+updateScale(100);
