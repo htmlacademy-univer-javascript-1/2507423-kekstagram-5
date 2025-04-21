@@ -11,6 +11,11 @@ const imageHashtagField = imageUploadForm.querySelector('.text__hashtags');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
+
+const effectLevelContainer = document.querySelector('.img-upload__effect-level');
+const effectLevelValue = document.querySelector('.effect-level__value');
+const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectsList = document.querySelector('.effects__list');
 function openUploadForm() {
   imageUploadForm.classList.remove('hidden');
   imageUploadOverlay.classList.remove('hidden');
@@ -31,6 +36,7 @@ function onDocumentEscapeKeydown(evt) {
 }
 
 imageUploadFile.addEventListener('change', () => {
+  resetFilters();
   openUploadForm();
 
   document.addEventListener('keydown', onDocumentEscapeKeydown);
@@ -141,3 +147,85 @@ scaleControlBigger.addEventListener('click', () => {
 });
 
 updateScale(100);
+
+const EFFECTS = {
+  'chrome': { filter: 'grayscale', unit: '', range: { min: 0, max: 1 }, step: 0.1 },
+  'sepia': { filter: 'sepia', unit: '', range: { min: 0, max: 1 }, step: 0.1 },
+  'marvin': { filter: 'invert', unit: '%', range: { min: 0, max: 100 }, step: 1 },
+  'phobos': { filter: 'blur', unit: 'px', range: { min: 0, max: 3 }, step: 0.1 },
+  'heat': { filter: 'brightness', unit: '', range: { min: 1, max: 3 }, step: 0.1 },
+  'none': null,
+};
+
+let currentEffect = 'none';
+
+noUiSlider.create(effectLevelSlider, {
+  start: 100,
+  range: { min: 0, max: 100 },
+  step: 1,
+  connect: 'lower',
+});
+
+function updateEffect(value) {
+  if (currentEffect === 'none') {
+    imagePreview.style.filter = '';
+    return;
+  }
+
+  const effect = EFFECTS[currentEffect];
+  let filterValue;
+
+  if (currentEffect === 'marvin') {
+    filterValue = value;
+  } else {
+    filterValue = value * (effect.range.max - effect.range.min) + effect.range.min;
+  }
+
+  imagePreview.style.filter = `${effect.filter}(${filterValue}${effect.unit})`;
+  effectLevelValue.value = filterValue.toFixed(2);
+}
+
+effectsList.addEventListener('change', (evt) => {
+  if (evt.target.name === 'effect') {
+    currentEffect = evt.target.value;
+
+    if (currentEffect === 'none') {
+      effectLevelContainer.classList.add('hidden');
+      imagePreview.style.filter = '';
+      effectLevelValue.value = '';
+    } else {
+      const effect = EFFECTS[currentEffect];
+      effectLevelContainer.classList.remove('hidden');
+      effectLevelSlider.noUiSlider.updateOptions({
+        range: effect.range,
+        start: effect.range.max,
+        step: effect.step,
+      });
+      updateEffect(effect.range.max);
+    }
+  }
+});
+
+function resetFilters() {
+  currentEffect = 'none';
+  effectLevelContainer.classList.add('hidden');
+  imagePreview.style.filter = '';
+  effectLevelValue.value = '';
+  effectLevelSlider.noUiSlider.updateOptions({
+    range: { min: 0, max: 100 },
+    start: 100,
+    step: 1,
+  });
+
+  const defaultEffectRadio = effectsList.querySelector('input[value="none"]');
+  if (defaultEffectRadio) {
+    defaultEffectRadio.checked = true;
+  }
+}
+
+effectLevelSlider.noUiSlider.on('update', (values) => {
+  updateEffect(parseFloat(values[0]));
+});
+
+effectLevelContainer.classList.add('hidden');
+effectLevelValue.value = '';
